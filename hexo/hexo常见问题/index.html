@@ -3,22 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hello，World!你好，世界！ | 浮萍</title>
+  <title>hexo常见问题 | 浮萍</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="Danny,Danny's Blog" />
   
-  <meta name="description" content="欢迎来到我的博客，在这里我会分享一些学习经历以及一些生活琐事。">
+  <meta name="description" content="1. 安装#2. 配置# 3. 部署4. 写作tags &amp; categories内插图片1.将Hexo目录下的配置文件_config.yml里的psot_asset_folder:设置为true。 2.在Hexo目录下执行: npm install hexo-asset-image --save  3.执行hexo n “博客名”生成博客，此时在_post目录会生成与博客同名的文件夹。 4">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello，World!你好，世界！">
-<meta property="og:url" content="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/hello-world/">
+<meta property="og:title" content="hexo常见问题">
+<meta property="og:url" content="https://dannysunsan.github.io/hexo/hexo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/">
 <meta property="og:site_name" content="浮萍">
-<meta property="og:description" content="欢迎来到我的博客，在这里我会分享一些学习经历以及一些生活琐事。">
+<meta property="og:description" content="1. 安装#2. 配置# 3. 部署4. 写作tags &amp; categories内插图片1.将Hexo目录下的配置文件_config.yml里的psot_asset_folder:设置为true。 2.在Hexo目录下执行: npm install hexo-asset-image --save  3.执行hexo n “博客名”生成博客，此时在_post目录会生成与博客同名的文件夹。 4">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2014-01-21T15:33:02.000Z">
-<meta property="article:modified_time" content="2021-11-22T08:36:38.402Z">
+<meta property="og:image" content="https://dannysunsan.github.io/.io//multi-th-in-user-process.png">
+<meta property="article:published_time" content="2021-11-22T08:46:16.000Z">
+<meta property="article:modified_time" content="2021-11-22T09:03:32.565Z">
 <meta property="article:author" content="dannysunsan">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dannysunsan.github.io/.io//multi-th-in-user-process.png">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -110,14 +112,14 @@
     </div>
 </header>
       <div class="outer">
-        <section id="main" class="body-wrap"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main" class="body-wrap"><article id="post-hexo常见问题" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="post-title" itemprop="name">
-      Hello，World!你好，世界！
+      hexo常见问题
     </h1>
     <div class="post-title-bar">
       <ul>
@@ -125,12 +127,12 @@
               <li>
                   <i class="fa fa-book"></i>
                   
-                      <a href="/categories/编程类/">编程类</a>
+                      <a href="/categories/hexo/">hexo</a>
                   
               </li>
           
         <li>
-          <i class="fa fa-calendar"></i>  2014-01-21
+          <i class="fa fa-calendar"></i>  2021-11-22
         </li>
         <li>
           <i class="fa fa-eye"></i>
@@ -146,12 +148,30 @@
     <div class="article-entry post-content" itemprop="articleBody">
       
             
-            <p>欢迎来到我的博客，在这里我会分享一些学习经历以及一些生活琐事。</p>
+            <h1 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h1><p>#2. 配置#</p>
+<h1 id="3-部署"><a href="#3-部署" class="headerlink" title="3. 部署"></a>3. 部署</h1><h1 id="4-写作"><a href="#4-写作" class="headerlink" title="4. 写作"></a>4. 写作</h1><h2 id="tags-amp-categories"><a href="#tags-amp-categories" class="headerlink" title="tags &amp; categories"></a>tags &amp; categories</h2><h2 id="内插图片"><a href="#内插图片" class="headerlink" title="内插图片"></a>内插图片</h2><p>1.将Hexo目录下的配置文件_config.yml里的psot_asset_folder:设置为true。</p>
+<p>2.在Hexo目录下执行:</p>
+<pre><code>npm install hexo-asset-image --save
+</code></pre>
+<p>3.执行hexo n “博客名”生成博客，此时在_post目录会生成与博客同名的文件夹。</p>
+<p>4.将博客需要使用的图片移动到文件夹中，然后在博客中使用Markdown的格式引用</p>
+<pre><code>![图片描述文字](图片名.jpg)
+</code></pre>
+<p><img src="/.io//multi-th-in-user-process.png" alt="在用户空间中实现多线程"></p>
+<p>如果图片加载不出来可以尝试一下方法：</p>
+<pre><code>打开/node_modules/hexo-asset-image/index.js，将
+var beginPos = getPosition(link, &#39;/&#39;, 3) + 1;
+内容更换为下面的代码
+if(version.length &gt; 0 &amp;&amp; Number(version[0]) == 3)
+   var beginPos = getPosition(link, &#39;/&#39;, 1) + 1;
+else
+   var beginPos = getPosition(link, &#39;/&#39;, 3) + 1;
+</code></pre>
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2021年11月22日 16:36</p>
-        <p>原始链接： <a class="post-url" href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/hello-world/" title="Hello，World!你好，世界！">https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/hello-world/</a></p>
+        <p>最后更新： 2021年11月22日 17:03</p>
+        <p>原始链接： <a class="post-url" href="/hexo/hexo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="hexo常见问题">https://dannysunsan.github.io/hexo/hexo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/</a></p>
         <footer>
             <a href="https://dannysunsan.github.io">
                 <img src="/images/logo.png" alt="dannysunsan">
@@ -177,7 +197,7 @@
     <div class="post-share-list" id="share-list">
         <ul class="share-icons">
           <li>
-            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/hello-world/&title=《Hello，World!你好，世界！》 — 浮萍&pic=https://dannysunsan.github.ioimages/logo.png" data-title="微博">
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dannysunsan.github.io/hexo/hexo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/&title=《hexo常见问题》 — 浮萍&pic=https://dannysunsan.github.ioimages/logo.png" data-title="微博">
               <i class="fa fa-weibo"></i>
             </a>
           </li>
@@ -187,22 +207,22 @@
             </a>
           </li>
           <li>
-            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/hello-world/&title=《Hello，World!你好，世界！》 — 浮萍&source=" data-title="QQ">
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dannysunsan.github.io/hexo/hexo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/&title=《hexo常见问题》 — 浮萍&source=" data-title="QQ">
               <i class="fa fa-qq"></i>
             </a>
           </li>
           <li>
-            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/hello-world/" data-title="Facebook">
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dannysunsan.github.io/hexo/hexo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" data-title="Facebook">
               <i class="fa fa-facebook"></i>
             </a>
           </li>
           <li>
-            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Hello，World!你好，世界！》 — 浮萍&url=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/hello-world/&via=https://dannysunsan.github.io" data-title="Twitter">
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《hexo常见问题》 — 浮萍&url=https://dannysunsan.github.io/hexo/hexo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/&via=https://dannysunsan.github.io" data-title="Twitter">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
           <li>
-            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/hello-world/" data-title="Google+">
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dannysunsan.github.io/hexo/hexo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" data-title="Google+">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -212,7 +232,7 @@
 <div class="post-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;" id="wxShare-close">×</a>
     <p>扫一扫，分享到微信</p>
-    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/hello-world/" alt="微信分享二维码">
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://dannysunsan.github.io/hexo/hexo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" alt="微信分享二维码">
 </div>
 
 <div class="mask"></div>
@@ -228,19 +248,20 @@
 </article>
 
 
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#1-%E5%AE%89%E8%A3%85"><span class="post-toc-text">1. 安装</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#3-%E9%83%A8%E7%BD%B2"><span class="post-toc-text">3. 部署</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#4-%E5%86%99%E4%BD%9C"><span class="post-toc-text">4. 写作</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#tags-amp-categories"><span class="post-toc-text">tags &amp; categories</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%86%85%E6%8F%92%E5%9B%BE%E7%89%87"><span class="post-toc-text">内插图片</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
 
 <nav id="article-nav">
   
-    <a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/" id="article-nav-newer" class="article-nav-link-wrap">
-
-      <span class="article-nav-title">
-        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
-        
-          多线程总结
-        
-      </span>
-    </a>
   
+    <a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">多线程总结</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
   
 </nav>
 
