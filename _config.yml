@@ -14,8 +14,9 @@ timezone: ''
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://dannysunsan.github.io/
-permalink: :year/:month/:day/:title/
+permalink: :category/:title/
 permalink_defaults:
+  lang: en
 pretty_urls:
   trailing_index: false # Set to false to remove trailing 'index.html' from permalinks
   trailing_html: false # Set to false to remove trailing '.html' from permalinks
@@ -66,7 +67,7 @@ index_generator:
   order_by: -date
 
 # Category & Tag
-default_category: uncategorized
+default_category: bin
 category_map:
 tag_map:
 
@@ -97,8 +98,10 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
-
+theme: miho
+#remote_theme: pages-themes/hacker@v0.2.0
+#plugins:
+#- jekyll-remote-theme 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
