@@ -37,7 +37,7 @@ menu:
 # Social setting, use to display social information | 社交设置，用来展示社交信息
 #  name:                  Font Awesome icon | Font Awesome 图标
 #    title: Home          Icon title | 图标标题
-#    url: //minhow.com    Url, absolute or relative path | 链接，绝对或相对路径
+#    url: //DannySunsan.com    Url, absolute or relative path | 链接，绝对或相对路径
 #    target: true         Whether to jump out | 是否跳出
 social:
   home:
