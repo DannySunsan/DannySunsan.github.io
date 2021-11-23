@@ -8,12 +8,12 @@
   
     <meta name="keywords" content="Danny,Danny's Blog" />
   
-  <meta name="description" content="#经典的线程模型# 理解进程的另一个角度是，用某种方法把相关的资源集中在一起。进程有存放程序正文和数据以及其他资源的地址空间。这些资源包括打开的文件、子进程、即将发生的定时器、信号处理程序、账号信息等。把这些信息放在进程中会比较容易管理。 另一个概念是，进程中拥有一个执行的线程，通常简写为 线程(thread)。线程会有程序计数器，用来记录接着要执行哪一条指令；线程还拥有寄存器，用来保存线程当前正">
+  <meta name="description" content="经典的线程模型理解进程的另一个角度是，用某种方法把相关的资源集中在一起。进程有存放程序正文和数据以及其他资源的地址空间。这些资源包括打开的文件、子进程、即将发生的定时器、信号处理程序、账号信息等。把这些信息放在进程中会比较容易管理。 另一个概念是，进程中拥有一个执行的线程，通常简写为 线程(thread)。线程会有程序计数器，用来记录接着要执行哪一条指令；线程还拥有寄存器，用来保存线程当前正在使用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多线程总结">
 <meta property="og:url" content="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/">
 <meta property="og:site_name" content="浮萍">
-<meta property="og:description" content="#经典的线程模型# 理解进程的另一个角度是，用某种方法把相关的资源集中在一起。进程有存放程序正文和数据以及其他资源的地址空间。这些资源包括打开的文件、子进程、即将发生的定时器、信号处理程序、账号信息等。把这些信息放在进程中会比较容易管理。 另一个概念是，进程中拥有一个执行的线程，通常简写为 线程(thread)。线程会有程序计数器，用来记录接着要执行哪一条指令；线程还拥有寄存器，用来保存线程当前正">
+<meta property="og:description" content="经典的线程模型理解进程的另一个角度是，用某种方法把相关的资源集中在一起。进程有存放程序正文和数据以及其他资源的地址空间。这些资源包括打开的文件、子进程、即将发生的定时器、信号处理程序、账号信息等。把这些信息放在进程中会比较容易管理。 另一个概念是，进程中拥有一个执行的线程，通常简写为 线程(thread)。线程会有程序计数器，用来记录接着要执行哪一条指令；线程还拥有寄存器，用来保存线程当前正在使用">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/multi-th-ThreePro-OneTh.png">
 <meta property="og:image" content="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/multi-th-OnePro-OneTh.png">
@@ -22,7 +22,7 @@
 <meta property="og:image" content="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/multi-th-in-core.png">
 <meta property="og:image" content="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/multi-th-in-user-core.png">
 <meta property="article:published_time" content="2021-11-22T07:49:09.000Z">
-<meta property="article:modified_time" content="2021-11-23T06:09:05.136Z">
+<meta property="article:modified_time" content="2021-11-23T06:22:10.003Z">
 <meta property="article:author" content="dannysunsan">
 <meta property="article:tag" content="多线程">
 <meta property="article:tag" content="linux">
@@ -156,8 +156,7 @@
     <div class="article-entry post-content" itemprop="articleBody">
       
             
-            <p>#经典的线程模型#</p>
-<p>理解进程的另一个角度是，用某种方法把相关的资源集中在一起。进程有存放程序正文和数据以及其他资源的地址空间。这些资源包括打开的文件、子进程、即将发生的定时器、信号处理程序、账号信息等。把这些信息放在进程中会比较容易管理。</p>
+            <h1 id="经典的线程模型"><a href="#经典的线程模型" class="headerlink" title="经典的线程模型"></a>经典的线程模型</h1><p>理解进程的另一个角度是，用某种方法把相关的资源集中在一起。进程有存放程序正文和数据以及其他资源的地址空间。这些资源包括打开的文件、子进程、即将发生的定时器、信号处理程序、账号信息等。把这些信息放在进程中会比较容易管理。</p>
 <p>另一个概念是，进程中拥有一个执行的线程，通常简写为 线程(thread)。线程会有程序计数器，用来记录接着要执行哪一条指令；线程还拥有寄存器，用来保存线程当前正在使用的变量；线程还会有堆栈，用来记录程序的执行路径。尽管线程必须在某个进程中执行，但是进程和线程完完全全是两个不同的概念，并且他们可以分开处理。进程用于把资源集中在一起，而线程则是 CPU 上调度执行的实体。</p>
 <p>线程给进程模型增加了一项内容，即在同一个进程中，允许彼此之间有较大的独立性且互不干扰。在一个进程中并行运行多个线程类似于在一台计算机上运行多个进程。在多个线程中，各个线程共享同一地址空间和其他资源。在多个进程中，进程共享物理内存、磁盘、打印机和其他资源。因为线程会包含有一些进程的属性，所以线程被称为轻量的进程(lightweight processes)。多线程(multithreading)一词还用于描述在同一进程中多个线程的情况。</p>
 <p>下图我们可以看到三个传统的进程，每个进程有自己的地址空间和单个控制线程。每个线程都在不同的地址空间中运行。</p>
@@ -302,7 +301,7 @@ int main(int argc,char *argv[])&#123;
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2021年11月23日 14:09</p>
+        <p>最后更新： 2021年11月23日 14:22</p>
         <p>原始链接： <a class="post-url" href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/" title="多线程总结">https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/</a></p>
         <footer>
             <a href="https://dannysunsan.github.io">
@@ -393,7 +392,7 @@ int main(int argc,char *argv[])&#123;
 
     <aside class="post-toc-pos post-toc-top" id="post-toc">
         <nav class="post-toc-wrap">
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link"><span class="post-toc-text"></span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="post-toc-text">线程系统调用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%B8%B8%E8%A7%81%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%98%AF%E8%B0%83%E7%94%A8-thread-yield%EF%BC%8C%E5%AE%83%E5%85%81%E8%AE%B8%E7%BA%BF%E7%A8%8B%E8%87%AA%E5%8A%A8%E6%94%BE%E5%BC%83-CPU-%E4%BB%8E%E8%80%8C%E8%AE%A9%E5%8F%A6%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E8%BF%90%E8%A1%8C%E3%80%82%E8%BF%99%E6%A0%B7%E4%B8%80%E4%B8%AA%E8%B0%83%E7%94%A8%E8%BF%98%E6%98%AF%E5%BE%88%E9%87%8D%E8%A6%81%E7%9A%84%EF%BC%8C%E5%9B%A0%E4%B8%BA%E4%B8%8D%E5%90%8C%E4%BA%8E%E8%BF%9B%E7%A8%8B%EF%BC%8C%E7%BA%BF%E7%A8%8B%E6%98%AF%E6%97%A0%E6%B3%95%E5%88%A9%E7%94%A8%E6%97%B6%E9%92%9F%E4%B8%AD%E6%96%AD%E5%BC%BA%E5%88%B6%E8%AE%A9%E7%BA%BF%E7%A8%8B%E8%AE%A9%E5%87%BA-CPU-%E7%9A%84%E3%80%82"><span class="post-toc-text">另一个常见的线程是调用 thread_yield，它允许线程自动放弃 CPU 从而让另一个线程运行。这样一个调用还是很重要的，因为不同于进程，线程是无法利用时钟中断强制让线程让出 CPU 的。</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#POSIX-%E7%BA%BF%E7%A8%8B"><span class="post-toc-text">POSIX 线程</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">线程实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9C%A8%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="post-toc-text">在用户空间实现线程的优势</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9C%A8%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8A%A3%E5%8A%BF"><span class="post-toc-text">在用户空间实现线程的劣势</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9C%A8%E5%86%85%E6%A0%B8%E4%B8%AD%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B"><span class="post-toc-text">在内核中实现线程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B7%B7%E5%90%88%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">混合实现</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BB%8F%E5%85%B8%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="post-toc-text">经典的线程模型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link"><span class="post-toc-text"></span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="post-toc-text">线程系统调用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%B8%B8%E8%A7%81%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%98%AF%E8%B0%83%E7%94%A8-thread-yield%EF%BC%8C%E5%AE%83%E5%85%81%E8%AE%B8%E7%BA%BF%E7%A8%8B%E8%87%AA%E5%8A%A8%E6%94%BE%E5%BC%83-CPU-%E4%BB%8E%E8%80%8C%E8%AE%A9%E5%8F%A6%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E8%BF%90%E8%A1%8C%E3%80%82%E8%BF%99%E6%A0%B7%E4%B8%80%E4%B8%AA%E8%B0%83%E7%94%A8%E8%BF%98%E6%98%AF%E5%BE%88%E9%87%8D%E8%A6%81%E7%9A%84%EF%BC%8C%E5%9B%A0%E4%B8%BA%E4%B8%8D%E5%90%8C%E4%BA%8E%E8%BF%9B%E7%A8%8B%EF%BC%8C%E7%BA%BF%E7%A8%8B%E6%98%AF%E6%97%A0%E6%B3%95%E5%88%A9%E7%94%A8%E6%97%B6%E9%92%9F%E4%B8%AD%E6%96%AD%E5%BC%BA%E5%88%B6%E8%AE%A9%E7%BA%BF%E7%A8%8B%E8%AE%A9%E5%87%BA-CPU-%E7%9A%84%E3%80%82"><span class="post-toc-text">另一个常见的线程是调用 thread_yield，它允许线程自动放弃 CPU 从而让另一个线程运行。这样一个调用还是很重要的，因为不同于进程，线程是无法利用时钟中断强制让线程让出 CPU 的。</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#POSIX-%E7%BA%BF%E7%A8%8B"><span class="post-toc-text">POSIX 线程</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">线程实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9C%A8%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="post-toc-text">在用户空间实现线程的优势</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9C%A8%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8A%A3%E5%8A%BF"><span class="post-toc-text">在用户空间实现线程的劣势</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9C%A8%E5%86%85%E6%A0%B8%E4%B8%AD%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B"><span class="post-toc-text">在内核中实现线程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B7%B7%E5%90%88%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">混合实现</span></a></li></ol></li></ol>
         </nav>
     </aside>
     
