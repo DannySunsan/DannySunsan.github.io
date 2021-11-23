@@ -22,7 +22,7 @@
 <meta property="og:image" content="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/multi-th-in-core.png">
 <meta property="og:image" content="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/multi-th-in-user-core.png">
 <meta property="article:published_time" content="2021-11-22T07:49:09.000Z">
-<meta property="article:modified_time" content="2021-11-23T06:22:10.003Z">
+<meta property="article:modified_time" content="2021-11-23T06:51:16.865Z">
 <meta property="article:author" content="dannysunsan">
 <meta property="article:tag" content="多线程">
 <meta property="article:tag" content="linux">
@@ -202,9 +202,13 @@
 </tbody></table>
 <p>和进程一样，线程可以处于下面这几种状态：运行中、阻塞、就绪和终止（进程图中没有画）。正在运行的线程拥有 CPU 时间片并且状态是运行中。一个被阻塞的线程会等待某个释放它的事件。例如，当一个线程执行从键盘读入数据的系统调用时，该线程就被阻塞直到有输入为止。线程通常会被阻塞，直到它等待某个外部事件的发生或者有其他线程来释放它。线程之间的状态转换和进程之间的状态转换是一样的。</p>
 <p>每个线程都会有自己的堆栈，如下图所示</p>
-<h2 id><a href="#" class="headerlink" title></a><img src="/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/multi-th-stack.png"></h2><h1 id="线程系统调用"><a href="#线程系统调用" class="headerlink" title="线程系统调用"></a>线程系统调用</h1><p>进程通常会从当前的某个单线程开始，然后这个线程通过调用一个库函数（比如 thread_create ）创建新的线程。线程创建的函数会要求指定新创建线程的名称。创建的线程通常都返回一个线程标识符，该标识符就是新线程的名字。</p>
+<p><img src="/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/multi-th-stack.png"></p>
+<hr>
+<h1 id="线程系统调用"><a href="#线程系统调用" class="headerlink" title="线程系统调用"></a>线程系统调用</h1><p>进程通常会从当前的某个单线程开始，然后这个线程通过调用一个库函数（比如 thread_create ）创建新的线程。线程创建的函数会要求指定新创建线程的名称。创建的线程通常都返回一个线程标识符，该标识符就是新线程的名字。</p>
 <p>当一个线程完成工作后，可以通过调用一个函数（比如 thread_exit）来退出。紧接着线程消失，状态变为终止，不能再进行调度。在某些线程的运行过程中，可以通过调用函数例如 thread_join ，表示一个线程可以等待另一个线程退出。这个过程阻塞调用线程直到等待特定的线程退出。在这种情况下，线程的创建和终止非常类似于进程的创建和终止。</p>
-<h2 id="另一个常见的线程是调用-thread-yield，它允许线程自动放弃-CPU-从而让另一个线程运行。这样一个调用还是很重要的，因为不同于进程，线程是无法利用时钟中断强制让线程让出-CPU-的。"><a href="#另一个常见的线程是调用-thread-yield，它允许线程自动放弃-CPU-从而让另一个线程运行。这样一个调用还是很重要的，因为不同于进程，线程是无法利用时钟中断强制让线程让出-CPU-的。" class="headerlink" title="另一个常见的线程是调用 thread_yield，它允许线程自动放弃 CPU 从而让另一个线程运行。这样一个调用还是很重要的，因为不同于进程，线程是无法利用时钟中断强制让线程让出 CPU 的。"></a>另一个常见的线程是调用 thread_yield，它允许线程自动放弃 CPU 从而让另一个线程运行。这样一个调用还是很重要的，因为不同于进程，线程是无法利用时钟中断强制让线程让出 CPU 的。</h2><h1 id="POSIX-线程"><a href="#POSIX-线程" class="headerlink" title="POSIX 线程"></a>POSIX 线程</h1><blockquote>
+<p>另一个常见的线程是调用 thread_yield，它允许线程自动放弃 CPU 从而让另一个线程运行。这样一个调用还是很重要的，因为不同于进程，线程是无法利用时钟中断强制让线程让出 CPU 的。</p>
+<hr>
+<h1 id="POSIX-线程"><a href="#POSIX-线程" class="headerlink" title="POSIX 线程"></a>POSIX 线程</h1><blockquote>
 <p>POSIX线程（通常称为pthreads）是一种独立于语言而存在的执行模型，以及并行执行模型。它允许程序控制时间上重叠的多个不同的工作流程。每个工作流程都称为一个线程，可以通过调用POSIX Threads API来实现对这些流程的创建和控制。可以把它理解为线程的标准。</p>
 </blockquote>
 <p>POSIX Threads 的实现在许多类似且符合POSIX的操作系统上可用，例如 FreeBSD、NetBSD、OpenBSD、Linux、macOS、Android、Solaris，它在现有 Windows API 之上实现了pthread。</p>
@@ -248,26 +252,26 @@
 #define NUMBER_OF_THREADS 10
 
 void *print_hello_world(vvoid *tid)&#123;
-  /* 输出线程的标识符，然后退出 */
-  printf(&quot;Hello World. Greetings from thread %d\n&quot;,tid);
-  pthread_exit(NULL);
+    /* 输出线程的标识符，然后退出 */
+    printf(&quot;Hello World. Greetings from thread %d\n&quot;,tid);
+    pthread_exit(NULL);
 &#125;
 
 int main(int argc,char *argv[])&#123;
-  /* 主程序创建 10 个线程，然后退出 */
-  pthread_t threads[NUMBER_OF_THREADS];
-  int status,i;
-     
-  for(int i = 0;i &lt; NUMBER_OF_THREADS;i++)&#123;
+    /* 主程序创建 10 个线程，然后退出 */
+    pthread_t threads[NUMBER_OF_THREADS];
+    int status,i;
+    
+    for(int i = 0;i &lt; NUMBER_OF_THREADS;i++)&#123;
     printf(&quot;Main here. Creating thread %d\n&quot;,i);
     status = pthread_create(&amp;threads[i], NULL, print_hello_world, (void *)i);
     
     if(status != 0)&#123;
-      printf(&quot;Oops. pthread_create returned error code %d\n&quot;,status);
-      exit(-1);
+        printf(&quot;Oops. pthread_create returned error code %d\n&quot;,status);
+        exit(-1);
     &#125;
-  &#125;
-  exit(NULL);
+    &#125;
+    exit(NULL);
 &#125;
 </code></pre>
 <hr>
@@ -301,7 +305,7 @@ int main(int argc,char *argv[])&#123;
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2021年11月23日 14:22</p>
+        <p>最后更新： 2021年11月23日 14:51</p>
         <p>原始链接： <a class="post-url" href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/" title="多线程总结">https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%BB%E7%BB%93/</a></p>
         <footer>
             <a href="https://dannysunsan.github.io">
@@ -392,7 +396,7 @@ int main(int argc,char *argv[])&#123;
 
     <aside class="post-toc-pos post-toc-top" id="post-toc">
         <nav class="post-toc-wrap">
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BB%8F%E5%85%B8%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="post-toc-text">经典的线程模型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link"><span class="post-toc-text"></span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="post-toc-text">线程系统调用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%B8%B8%E8%A7%81%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%98%AF%E8%B0%83%E7%94%A8-thread-yield%EF%BC%8C%E5%AE%83%E5%85%81%E8%AE%B8%E7%BA%BF%E7%A8%8B%E8%87%AA%E5%8A%A8%E6%94%BE%E5%BC%83-CPU-%E4%BB%8E%E8%80%8C%E8%AE%A9%E5%8F%A6%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E8%BF%90%E8%A1%8C%E3%80%82%E8%BF%99%E6%A0%B7%E4%B8%80%E4%B8%AA%E8%B0%83%E7%94%A8%E8%BF%98%E6%98%AF%E5%BE%88%E9%87%8D%E8%A6%81%E7%9A%84%EF%BC%8C%E5%9B%A0%E4%B8%BA%E4%B8%8D%E5%90%8C%E4%BA%8E%E8%BF%9B%E7%A8%8B%EF%BC%8C%E7%BA%BF%E7%A8%8B%E6%98%AF%E6%97%A0%E6%B3%95%E5%88%A9%E7%94%A8%E6%97%B6%E9%92%9F%E4%B8%AD%E6%96%AD%E5%BC%BA%E5%88%B6%E8%AE%A9%E7%BA%BF%E7%A8%8B%E8%AE%A9%E5%87%BA-CPU-%E7%9A%84%E3%80%82"><span class="post-toc-text">另一个常见的线程是调用 thread_yield，它允许线程自动放弃 CPU 从而让另一个线程运行。这样一个调用还是很重要的，因为不同于进程，线程是无法利用时钟中断强制让线程让出 CPU 的。</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#POSIX-%E7%BA%BF%E7%A8%8B"><span class="post-toc-text">POSIX 线程</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">线程实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9C%A8%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="post-toc-text">在用户空间实现线程的优势</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9C%A8%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8A%A3%E5%8A%BF"><span class="post-toc-text">在用户空间实现线程的劣势</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9C%A8%E5%86%85%E6%A0%B8%E4%B8%AD%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B"><span class="post-toc-text">在内核中实现线程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B7%B7%E5%90%88%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">混合实现</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BB%8F%E5%85%B8%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="post-toc-text">经典的线程模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="post-toc-text">线程系统调用</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#POSIX-%E7%BA%BF%E7%A8%8B"><span class="post-toc-text">POSIX 线程</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">线程实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9C%A8%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="post-toc-text">在用户空间实现线程的优势</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9C%A8%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8A%A3%E5%8A%BF"><span class="post-toc-text">在用户空间实现线程的劣势</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9C%A8%E5%86%85%E6%A0%B8%E4%B8%AD%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B"><span class="post-toc-text">在内核中实现线程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B7%B7%E5%90%88%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">混合实现</span></a></li></ol></li></ol>
         </nav>
     </aside>
     
