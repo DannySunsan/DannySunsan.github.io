@@ -20,7 +20,7 @@ categories: hexo
     pretty_urls:
     trailing_index: false # Set to false to remove trailing 'index.html' from permalinks
     trailing_html: false # Set to false to remove trailing '.html' from permalinks
-
+    
     default_category: bin
     post_asset_folder: true
     theme: miho
@@ -46,7 +46,7 @@ categories: hexo
     date: 2021-11-22 14:56:48
     type: "tags"
     ---
-
+    
     hexo new page categories
     修改categories/index.md 里面的内容为
     ---
@@ -54,7 +54,7 @@ categories: hexo
     date: 2021-11-22 14:56:48
     type: "categories"
     ---
-
+    
     hexo new page about
     修改about/index.md 里面的内容为
     ---
@@ -62,7 +62,7 @@ categories: hexo
     date: 2021-11-22 14:56:48
     type: "categories"
     ---
-
+    
     hexo new newpapername
 
 ## 内插图片 ##
@@ -79,3 +79,8 @@ categories: hexo
 4.将博客需要使用的图片移动到<font face="微软雅黑" size=3 color=#FF0000 >博客同名的文件夹</font>中，然后在博客中使用Markdown的格式引用
 
     ![图片描述文字](图片名.jpg)
+
+## 主题 
+
+
+[官网](https://hexo.io/themes/)
