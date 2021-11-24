@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>c++并发之&lt;future&gt; | 浮萍</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Danny,Danny's Blog" />
+  
+  <meta name="description" content="futurestd::future 可以用来获取异步任务的结果，因此可以把它当成一种简单的线程间同步的手段。std::future 通常由某个 Provider 创建，你可以把 Provider 想象成一个异步任务的提供者，Provider 在某个线程中设置共享状态的值，与该共享状态相关联的 std::future 对象调用 get（通常在另外一个线程中） 获取该值，如果共享状态的标志不为 rea">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++并发之&lt;future&gt;">
+<meta property="og:url" content="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/">
+<meta property="og:site_name" content="浮萍">
+<meta property="og:description" content="futurestd::future 可以用来获取异步任务的结果，因此可以把它当成一种简单的线程间同步的手段。std::future 通常由某个 Provider 创建，你可以把 Provider 想象成一个异步任务的提供者，Provider 在某个线程中设置共享状态的值，与该共享状态相关联的 std::future 对象调用 get（通常在另外一个线程中） 获取该值，如果共享状态的标志不为 rea">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-11-24T01:52:45.000Z">
+<meta property="article:modified_time" content="2021-11-24T06:56:38.062Z">
+<meta property="article:author" content="dannysunsan">
+<meta property="article:tag" content="c++">
+<meta property="article:tag" content="多线程">
+<meta property="article:tag" content="并发">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<script src="/js/pace.min.js"></script>
+
+  
+
+  
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">Danny&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a  href="/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a  href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a  href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.jpg" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Danny&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        浮萍的开发记录
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="Home" target="_blank" href="//DannySunsan.github.io">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/DannySunsan">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" href="//weibo.com/WongMinHo">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-c-并发之-future" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      c++并发之&lt;future&gt;
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/编程类/">编程类</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2021-11-24
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h1 id="future"><a href="#future" class="headerlink" title="future"></a>future</h1><p>std::future 可以用来获取异步任务的结果，因此可以把它当成一种简单的线程间同步的手段。std::future 通常由某个 Provider 创建，你可以把 Provider 想象成一个异步任务的提供者，Provider 在某个线程中设置共享状态的值，与该共享状态相关联的 std::future 对象调用 get（通常在另外一个线程中） 获取该值，如果共享状态的标志不为 ready，则调用 std::future::get 会阻塞当前的调用者，直到 Provider 设置了共享状态的值（此时共享状态的标志变为 ready），std::future::get 返回异步任务的值或异常（如果发生了异常）。</p>
+<p><future>头文件包含以下几个类和函数：</future></p>
+<ul>
+<li>Providers类：std::promise，std::package_task</li>
+<li>Future类：std::future，shared_future</li>
+<li>Provides函数：std::async()</li>
+<li>其他类型：std::future_error，std::future_errc，std::future_status，std::launch</li>
+</ul>
+<h2 id="std-promise"><a href="#std-promise" class="headerlink" title="std::promise"></a>std::promise</h2><p>promise 对象可以保存某一类型 T 的值，该值可被 future 对象读取（可能在另外一个线程中），因此 promise 也提供了一种线程同步的手段。在 promise 对象构造时可以和一个共享状态（通常是std::future）相关联，并可以在相关联的共享状态(std::future)上保存一个类型为 T 的值。</p>
+<p>可以通过 get_future 来获取与该 promise 对象相关联的 future 对象，调用该函数之后，两个对象共享相同的共享状态(shared state)</p>
+<ul>
+<li>promise 对象是异步 Provider，它可以在某一时刻设置共享状态的值。</li>
+<li>future 对象可以异步返回共享状态的值，或者在必要的情况下阻塞调用者并等待共享状态标志变为 ready，然后才能获取共享状态的值。</li>
+</ul>
+<p>另外，std::promise 的 operator= 没有拷贝语义，即 std::promise 普通的赋值操作被禁用，operator= 只有 move 语义，所以 std::promise 对象是禁止拷贝的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_input</span><span class="params">(std::promise&lt;<span class="keyword">int</span>&gt;&amp; pi)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="keyword">int</span> x;</span><br><span class="line">       std::cout &lt;&lt; <span class="string">&quot;Enter an inter va==\n&quot;</span>;</span><br><span class="line">       std::cin.<span class="built_in">exceptions</span>(std::ios::failbit);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">try</span></span><br><span class="line">       &#123;</span><br><span class="line">           std::cin &gt;&gt; x;</span><br><span class="line">           pi.<span class="built_in">set_value</span>(x); <span class="comment">//set_value会将共享标志位置为ready</span></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="built_in"><span class="keyword">catch</span></span> (std::exception&amp;)</span><br><span class="line">       &#123;</span><br><span class="line">           pi.<span class="built_in">set_exception</span>(std::<span class="built_in">current_exception</span>());</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">printSth</span><span class="params">(std::future&lt;<span class="keyword">int</span>&gt;&amp; fut)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="keyword">try</span></span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">int</span> x = fut.<span class="built_in">get</span>();<span class="comment">//在共享标志位置为ready之前会被阻塞</span></span><br><span class="line">           std::cout &lt;&lt; x &lt;&lt; endl;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="built_in"><span class="keyword">catch</span></span> (std::exception&amp; e)</span><br><span class="line">       &#123;</span><br><span class="line">           std::cout &lt;&lt; <span class="string">&quot;exception&quot;</span> &lt;&lt; e.<span class="built_in">what</span>() &lt;&lt; endl;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">startProcess</span><span class="params">()</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       std::promise&lt;<span class="keyword">int</span>&gt; pi;</span><br><span class="line">       std::future&lt;<span class="keyword">int</span>&gt; fut = pi.<span class="built_in">get_future</span>();</span><br><span class="line"></span><br><span class="line">       <span class="function">std::thread <span class="title">th1</span><span class="params">(get_input, std::ref(pi))</span></span>;</span><br><span class="line">       <span class="function">std::thread <span class="title">th2</span><span class="params">(printSth, std::ref(fut))</span></span>;</span><br><span class="line"></span><br><span class="line">       th1.<span class="built_in">join</span>();</span><br><span class="line">       th2.<span class="built_in">join</span>();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>std::promise::set_value_at_thread_exit 设置共享状态的值，但是只有当线程退出的时候promise对象才会置为ready</p>
+<h2 id="std-packaged-task"><a href="#std-packaged-task" class="headerlink" title="std::packaged_task"></a>std::packaged_task</h2><p>std::packaged_task 对象内部包含了两个最基本元素，一、被包装的任务(stored task)，任务(task)是一个可调用的对象，如函数指针、成员函数指针或者函数对象，二、共享状态(shared state)，用于保存任务的返回值，可以通过 std::future 对象来达到异步访问共享状态的效果。</p>
+<p>可以通过 std::packged_task::get_future 来获取与共享状态相关联的 std::future 对象。在调用该函数之后，两个对象共享相同的共享状态，具体解释如下：</p>
+<ul>
+<li>std::packaged_task 对象是异步 Provider，它在某一时刻通过调用被包装的任务来设置共享状态的值。</li>
+<li>std::future 对象是一个异步返回对象，通过它可以获得共享状态的值，当然在必要的时候需要等待共享状态标志变为 ready.</li>
+</ul>
+<p>std::packaged_task 的共享状态的生命周期一直持续到最后一个与之相关联的对象被释放或者销毁为止。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">processWorks</span><span class="params">()</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="function">std::packaged_task&lt;<span class="title">int</span><span class="params">(<span class="keyword">int</span>)</span>&gt; <span class="title">task</span><span class="params">([](<span class="keyword">int</span> total) &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">           <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; total; ++i)</span></span></span><br><span class="line"><span class="params"><span class="function">           &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">               Sleep(<span class="number">1000</span>);</span></span></span><br><span class="line"><span class="params"><span class="function">               cout &lt;&lt; this_thread::get_id() &lt;&lt; <span class="string">&quot; : &quot;</span> &lt;&lt; i &lt;&lt; endl;</span></span></span><br><span class="line"><span class="params"><span class="function">           &#125;</span></span></span><br><span class="line"><span class="params"><span class="function">           <span class="keyword">return</span> total;</span></span></span><br><span class="line"><span class="params"><span class="function">           &#125;)</span></span>;</span><br><span class="line"></span><br><span class="line">       std::future&lt;<span class="keyword">int</span>&gt; fut = task.<span class="built_in">get_future</span>();       </span><br><span class="line">       <span class="built_in">task</span>(<span class="number">3</span>);</span><br><span class="line">       std::cout &lt;&lt; fut.<span class="built_in">get</span>() &lt;&lt; std::endl;<span class="comment">//此处会等待task执行完成，并返回结果</span></span><br><span class="line">       </span><br><span class="line">       task.<span class="built_in">reset</span>();<span class="comment">//重置 packaged_task 的共享状态 </span></span><br><span class="line">       fut = task.<span class="built_in">get_future</span>();</span><br><span class="line">       std::<span class="built_in">thread</span>(std::<span class="built_in">move</span>(task), <span class="number">5</span>).<span class="built_in">detach</span>();</span><br><span class="line">       std::cout &lt;&lt; fut.<span class="built_in">get</span>() &lt;&lt; std::endl;<span class="comment">//此处会等待task执行完成，并返回结果</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="std-async"><a href="#std-async" class="headerlink" title="std::async()"></a>std::async()</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a non-optimized way of checking for prime numbers:</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">is_prime</span> <span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;Calculating. Please, wait...\n&quot;</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">2</span>; i&lt;x; ++i) <span class="keyword">if</span> (x%i==<span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// call is_prime(313222313) asynchronously:</span></span><br><span class="line">  std::future&lt;<span class="keyword">bool</span>&gt; fut = std::<span class="built_in">async</span> (is_prime,<span class="number">313222313</span>);</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;Checking whether 313222313 is prime.\n&quot;</span>;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">bool</span> ret = fut.<span class="built_in">get</span>();      <span class="comment">// waits for is_prime to return</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (ret) std::cout &lt;&lt; <span class="string">&quot;It is prime!\n&quot;</span>;</span><br><span class="line">  <span class="keyword">else</span> std::cout &lt;&lt; <span class="string">&quot;It is not prime.\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Exception-safety"><a href="#Exception-safety" class="headerlink" title="Exception safety"></a>Exception safety</h3><table>
+<thead>
+<tr>
+<th align="left">exception type</th>
+<th align="left">error condition</th>
+<th align="left">description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">system_error</td>
+<td align="left">errc::resource_unavailable_try_again</td>
+<td align="left">The system isunable to start a new thread</td>
+</tr>
+</tbody></table>
+<h2 id="shared-future"><a href="#shared-future" class="headerlink" title="shared_future"></a>shared_future</h2><p>shared_future对象的行为类似于future对象，不同之处在于它可以被复制，并且多个shared_future对象可以共享其共享状态的所有权。它们还允许在准备就绪后多次检索处于共享状态的值。</p>
+<p>Shared_future对象可以从future对象隐式转换(参见其构造函数)，也可以通过调用future::share显式获取。在这两种情况下，获取它的future对象将其与共享状态的关联转移到shared_future，并使其自身失效。</p>
+<p>共享状态的生存期至少持续到与之关联的最后一个对象被销毁为止。从shared_future(使用成员get)中检索值不会释放其对共享状态的所有权(与futures不同)。因此，如果与shared_future对象关联，共享状态可以在最初获取它的对象中保存(如果有的话)。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">shareWorks</span><span class="params">()</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       std::future&lt;<span class="keyword">int</span>&gt; fut = <span class="built_in">async</span>([] &#123;</span><br><span class="line">           cout &lt;&lt; <span class="string">&quot;async\n&quot;</span>;</span><br><span class="line">           <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">           &#125;);</span><br><span class="line">       std::shared_future&lt;<span class="keyword">int</span>&gt; sFut = fut.<span class="built_in">share</span>();</span><br><span class="line"></span><br><span class="line">       <span class="comment">// 共享的 future 对象可以被多次访问.</span></span><br><span class="line">       std::cout &lt;&lt; sFut.<span class="built_in">get</span>() &lt;&lt; std::endl;</span><br><span class="line">       std::cout &lt;&lt; sFut.<span class="built_in">get</span>() &lt;&lt; std::endl;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2021年11月24日 14:56</p>
+        <p>原始链接： <a class="post-url" href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/" title="c++并发之&lt;future&gt;">https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/</a></p>
+        <footer>
+            <a href="https://dannysunsan.github.io">
+                <img src="/images/logo.jpg" alt="dannysunsan">
+                dannysunsan
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/&title=《c++并发之<future>》 — 浮萍&pic=https://dannysunsan.github.ioimages/logo.jpg" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/&title=《c++并发之<future>》 — 浮萍&source=" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《c++并发之<future>》 — 浮萍&url=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/&via=https://dannysunsan.github.io" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/c++/" class="color4">c++</a>
+      
+    <a href="/tags/多线程/" class="color4">多线程</a>
+      
+    <a href="/tags/并发/" class="color3">并发</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#future"><span class="post-toc-text">future</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#std-promise"><span class="post-toc-text">std::promise</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#std-packaged-task"><span class="post-toc-text">std::packaged_task</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#std-async"><span class="post-toc-text">std::async()</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Exception-safety"><span class="post-toc-text">Exception safety</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#shared-future"><span class="post-toc-text">shared_future</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+  
+    <a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">进程间通信</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2021 dannysunsan<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "https://dannysunsan.github.io",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 0
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/Markdown/">Markdown</a><a class="category-link" href="/categories/hexo/">hexo</a><a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%B1%BB/">编程类</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/IPC/" style="font-size: 10px;">IPC</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 20px;">多线程</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">多进程</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a  href="/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/IPC/" style="font-size: 10px;">IPC</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 20px;">多线程</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">多进程</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  
+<script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  
+<script src="/js/animate.js"></script>
+
+
+
+  
+<script src="/js/pop-img.js"></script>
+
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>
