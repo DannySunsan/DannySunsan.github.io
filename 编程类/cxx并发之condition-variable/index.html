@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>cxx并发之condition_variable | 浮萍</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Danny,Danny's Blog" />
+  
+  <meta name="description" content="condition_variable参考 条件变量是一种能够阻塞调用线程的对象，直到通知恢复为止。 当调用它的一个等待函数时，它使用unique_lock(通过互斥锁mutex)来锁定线程。线程保持阻塞状态，直到被另一个线程唤醒，该线程调用同一个condition_variable对象上的通知函数。 类型为condition_variable的对象总是使用unique_lock&lt;mutex&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cxx并发之condition_variable">
+<meta property="og:url" content="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/cxx%E5%B9%B6%E5%8F%91%E4%B9%8Bcondition-variable/">
+<meta property="og:site_name" content="浮萍">
+<meta property="og:description" content="condition_variable参考 条件变量是一种能够阻塞调用线程的对象，直到通知恢复为止。 当调用它的一个等待函数时，它使用unique_lock(通过互斥锁mutex)来锁定线程。线程保持阻塞状态，直到被另一个线程唤醒，该线程调用同一个condition_variable对象上的通知函数。 类型为condition_variable的对象总是使用unique_lock&lt;mutex&amp;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-11-25T01:46:10.000Z">
+<meta property="article:modified_time" content="2021-11-25T02:18:34.772Z">
+<meta property="article:author" content="dannysunsan">
+<meta property="article:tag" content="c++">
+<meta property="article:tag" content="多线程">
+<meta property="article:tag" content="并发">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<script src="/js/pace.min.js"></script>
+
+  
+
+  
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">Danny&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a  href="/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a  href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a  href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.jpg" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Danny&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        浮萍的开发记录
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="Home" target="_blank" href="//DannySunsan.github.io">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/DannySunsan">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" href="//weibo.com/WongMinHo">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-cxx并发之condition-variable" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      cxx并发之condition_variable
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/编程类/">编程类</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2021-11-25
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h1 id="condition-variable"><a href="#condition-variable" class="headerlink" title="condition_variable"></a>condition_variable</h1><p><a target="_blank" rel="noopener" href="http://www.cplusplus.com/reference/condition_variable/">参考</a></p>
+<p>条件变量是一种能够阻塞调用线程的对象，直到通知恢复为止。</p>
+<p>当调用它的一个等待函数时，它使用unique_lock(通过互斥锁mutex)来锁定线程。线程保持阻塞状态，直到被另一个线程唤醒，该线程调用同一个condition_variable对象上的通知函数。</p>
+<p>类型为condition_variable的对象总是使用unique_lock&lt;mutex&gt;来等待;对于适用于任何类型的可锁定类型的替代方法，请参阅condition_variable_any。</p>
+<p>三个wait functions，</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">wait</td>
+<td>Wait until notified</td>
+</tr>
+<tr>
+<td align="left">wait_for</td>
+<td>Wait for timeout or until notified</td>
+</tr>
+<tr>
+<td align="left">wait_until</td>
+<td>Wait until notified or time point</td>
+</tr>
+</tbody></table>
+<p>两个notify functions,</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">notify_one</td>
+<td align="left">Notify one</td>
+</tr>
+<tr>
+<td align="left">notify_all</td>
+<td align="left">Notify all</td>
+</tr>
+</tbody></table>
+<h2 id="wait"><a href="#wait" class="headerlink" title="wait"></a>wait</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fff</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i)</span><br><span class="line">      &#123;</span><br><span class="line">          cout &lt;&lt; this_thread::<span class="built_in">get_id</span>() &lt;&lt; <span class="string">&quot; : &quot;</span> &lt;&lt; i &lt;&lt; endl;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">startProcess</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">      mutex mu;</span><br><span class="line">      condition_variable cdv;</span><br><span class="line">      <span class="keyword">bool</span> bLock = <span class="literal">false</span>;</span><br><span class="line">      <span class="function">thread <span class="title">th1</span><span class="params">([&amp;]</span></span></span><br><span class="line"><span class="params"><span class="function">          &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">              <span class="keyword">for</span> (;;)</span></span></span><br><span class="line"><span class="params"><span class="function">              &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">                  &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">                      std::unique_lock&lt;std::mutex&gt; lock(mu);</span></span></span><br><span class="line"><span class="params"><span class="function">                      cdv.wait(lock,</span></span></span><br><span class="line"><span class="params"><span class="function">                          [&amp;bLock] &#123; <span class="keyword">return</span> bLock; &#125;);</span></span></span><br><span class="line"><span class="params"><span class="function"></span></span></span><br><span class="line"><span class="params"><span class="function">                      bLock = <span class="literal">false</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">                  &#125;</span></span></span><br><span class="line"><span class="params"><span class="function">                  fff();</span></span></span><br><span class="line"><span class="params"><span class="function">              &#125;</span></span></span><br><span class="line"><span class="params"><span class="function">              </span></span></span><br><span class="line"><span class="params"><span class="function">          &#125;</span></span></span><br><span class="line"><span class="params"><span class="function">      )</span></span>;</span><br><span class="line"></span><br><span class="line">      <span class="function">thread <span class="title">th2</span><span class="params">([&amp;]</span></span></span><br><span class="line"><span class="params"><span class="function">          &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">              <span class="keyword">for</span> (;;)</span></span></span><br><span class="line"><span class="params"><span class="function">              &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">                  &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">                      std::unique_lock&lt;std::mutex&gt; lock(mu);</span></span></span><br><span class="line"><span class="params"><span class="function">                      cdv.wait(lock,</span></span></span><br><span class="line"><span class="params"><span class="function">                          [&amp;bLock] &#123; <span class="keyword">return</span> bLock; &#125;);</span></span></span><br><span class="line"><span class="params"><span class="function"></span></span></span><br><span class="line"><span class="params"><span class="function">                      bLock = <span class="literal">false</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">                  &#125;</span></span></span><br><span class="line"><span class="params"><span class="function">                  fff();</span></span></span><br><span class="line"><span class="params"><span class="function">              &#125;        </span></span></span><br><span class="line"><span class="params"><span class="function">          &#125;</span></span></span><br><span class="line"><span class="params"><span class="function">      )</span></span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">for</span>(;;)</span><br><span class="line">      &#123;</span><br><span class="line">          &#123;</span><br><span class="line">              <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mu)</span></span>;</span><br><span class="line">              bLock = <span class="literal">true</span>;              </span><br><span class="line">          &#125; </span><br><span class="line">          <span class="built_in">Sleep</span>(<span class="number">5000</span>);</span><br><span class="line">          cdv.<span class="built_in">notify_one</span>();</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="wait-for"><a href="#wait-for" class="headerlink" title="wait_for"></a>wait_for</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (cdv.<span class="built_in">wait_for</span>(lock, std::chrono::<span class="built_in">seconds</span>(<span class="number">1</span>)) == std::cv_status::timeout) &#123;</span><br><span class="line">      std::cout &lt;&lt; this_thread::<span class="built_in">get_id</span>() &lt;&lt;<span class="string">&#x27;.&#x27;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="wait-until"><a href="#wait-until" class="headerlink" title="wait until"></a>wait until</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xtime t;</span><br><span class="line">t.sec = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span> (cdv.<span class="built_in">wait_until</span>(lock, &amp;t) == std::cv_status::timeout) &#123;</span><br><span class="line">      std::cout &lt;&lt; this_thread::<span class="built_in">get_id</span>() &lt;&lt; <span class="string">&#x27;.&#x27;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2021年11月25日 10:18</p>
+        <p>原始链接： <a class="post-url" href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/cxx%E5%B9%B6%E5%8F%91%E4%B9%8Bcondition-variable/" title="cxx并发之condition_variable">https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/cxx%E5%B9%B6%E5%8F%91%E4%B9%8Bcondition-variable/</a></p>
+        <footer>
+            <a href="https://dannysunsan.github.io">
+                <img src="/images/logo.jpg" alt="dannysunsan">
+                dannysunsan
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/cxx%E5%B9%B6%E5%8F%91%E4%B9%8Bcondition-variable/&title=《cxx并发之condition_variable》 — 浮萍&pic=https://dannysunsan.github.ioimages/logo.jpg" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/cxx%E5%B9%B6%E5%8F%91%E4%B9%8Bcondition-variable/&title=《cxx并发之condition_variable》 — 浮萍&source=" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/cxx%E5%B9%B6%E5%8F%91%E4%B9%8Bcondition-variable/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《cxx并发之condition_variable》 — 浮萍&url=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/cxx%E5%B9%B6%E5%8F%91%E4%B9%8Bcondition-variable/&via=https://dannysunsan.github.io" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/cxx%E5%B9%B6%E5%8F%91%E4%B9%8Bcondition-variable/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/cxx%E5%B9%B6%E5%8F%91%E4%B9%8Bcondition-variable/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/c++/" class="color4">c++</a>
+      
+    <a href="/tags/多线程/" class="color4">多线程</a>
+      
+    <a href="/tags/并发/" class="color3">并发</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#condition-variable"><span class="post-toc-text">condition_variable</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#wait"><span class="post-toc-text">wait</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#wait-for"><span class="post-toc-text">wait_for</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#wait-until"><span class="post-toc-text">wait until</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+  
+    <a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">c++并发之&lt;future&gt;</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2021 dannysunsan<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "https://dannysunsan.github.io",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 0
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/Markdown/">Markdown</a><a class="category-link" href="/categories/hexo/">hexo</a><a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%B1%BB/">编程类</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/IPC/" style="font-size: 10px;">IPC</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/c/" style="font-size: 15px;">c++</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 20px;">多线程</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">多进程</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 15px;">并发</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a  href="/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/IPC/" style="font-size: 10px;">IPC</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/c/" style="font-size: 15px;">c++</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 20px;">多线程</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">多进程</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 15px;">并发</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  
+<script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  
+<script src="/js/animate.js"></script>
+
+
+
+  
+<script src="/js/pop-img.js"></script>
+
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>
