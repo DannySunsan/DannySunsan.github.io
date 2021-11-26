@@ -6,6 +6,7 @@ tags:
      - 多线程
      - 并发
 categories: 编程类
+thumbnail: images/multi-th.jpg
 ---
 
 # future
