@@ -6,7 +6,7 @@
   <link href="https://dannysunsan.github.io/atom.xml" rel="self"/>
   
   <link href="https://dannysunsan.github.io/"/>
-  <updated>2021-12-14T08:09:56.798Z</updated>
+  <updated>2021-12-14T08:14:12.423Z</updated>
   <id>https://dannysunsan.github.io/</id>
   
   <author>
@@ -18,62 +18,25 @@
   
   <entry>
     <title>python删除目录下所有文件的方法</title>
-    <link href="https://dannysunsan.github.io/bin/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/"/>
-    <id>https://dannysunsan.github.io/bin/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/</id>
+    <link href="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/"/>
+    <id>https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/</id>
     <published>2021-12-14T07:58:05.000Z</published>
-    <updated>2021-12-14T08:09:56.798Z</updated>
+    <updated>2021-12-14T08:14:12.423Z</updated>
     
-    <content type="html"><![CDATA[<p>#删除所有文件及文件夹<br>python中没有专门用于删除文件的接口，不过实现起来也不难，我这里提供了一种一种递归的方式，先利用os.listdir(path)获取目录下的所有文件，如果是文件夹就进行递归，直到最后一级；如果是文件，修改只读为可读写，删除文件。最后利用shutil.rmtree(path)删除所有目录。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> stat</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delFiles</span>(<span class="params">path</span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        lstFiles = os.listdir(path)</span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> lstFiles:</span><br><span class="line">            full_path = os.path.join(path,file)</span><br><span class="line">            <span class="keyword">if</span> os.path.isdir(full_path):</span><br><span class="line">                delFiles(full_path)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                os.chmod(full_path,stat.S_IWRITE|stat.S_IWGRP|stat.S_IWOTH)</span><br><span class="line">                os.remove(full_path)</span><br><span class="line">        <span class="keyword">if</span> os.path.exists(path):</span><br><span class="line">           shutil.rmtree(path)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">        <span class="built_in">print</span>(err)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<h1 id="删除所有文件及文件夹"><a href="#删除所有文件及文件夹" class="headerlink" title="删除所有文件及文件夹"></a>删除所有文件及文件夹</h1><p>python中没有专门用于删除文件的接口，不过实现起来也不难，我这里提供了一种一种递归的方式，先利用os.listdir(path)获取目录下的所有文件，如果是文件夹就进行递归，直到最后一级；如果是文件，修改只读为可读写，删除文件。最后利用shutil.rmtree(path)删除所有目录。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> stat</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delFiles</span>(<span class="params">path</span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        lstFiles = os.listdir(path)</span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> lstFiles:</span><br><span class="line">            full_path = os.path.join(path,file)</span><br><span class="line">            <span class="keyword">if</span> os.path.isdir(full_path):</span><br><span class="line">                delFiles(full_path)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                os.chmod(full_path,stat.S_IWRITE|stat.S_IWGRP|stat.S_IWOTH)</span><br><span class="line">                os.remove(full_path)</span><br><span class="line">        <span class="keyword">if</span> os.path.exists(path):</span><br><span class="line">           shutil.rmtree(path)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">        <span class="built_in">print</span>(err)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>]]></content>
     
     
       
       
-    <summary type="html">&lt;p&gt;#删除所有文件及文件夹&lt;br&gt;python中没有专门用于删除文件的接口，不过实现起来也不难，我这里提供了一种一种递归的方式，先利用os.listdir(path)获取目录下的所有文件，如果是文件夹就进行递归，直到最后一级；如果是文件，修改只读为可读写，删除文件。最后利用sh</summary>
+    <summary type="html">&lt;h1 id=&quot;删除所有文件及文件夹&quot;&gt;&lt;a href=&quot;#删除所有文件及文件夹&quot; class=&quot;headerlink&quot; title=&quot;删除所有文件及文件夹&quot;&gt;&lt;/a&gt;删除所有文件及文件夹&lt;/h1&gt;&lt;p&gt;python中没有专门用于删除文件的接口，不过实现起来也不难，我这里提供了一</summary>
       
     
     
+    
+    <category term="编程类" scheme="https://dannysunsan.github.io/categories/%E7%BC%96%E7%A8%8B%E7%B1%BB/"/>
     
     
     <category term="python" scheme="https://dannysunsan.github.io/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>newpage</title>
-    <link href="https://dannysunsan.github.io/bin/new/"/>
-    <id>https://dannysunsan.github.io/bin/new/</id>
-    <published>2021-12-03T07:03:16.000Z</published>
-    <updated>2021-12-03T07:03:16.911Z</updated>
-    
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>test</title>
-    <link href="https://dannysunsan.github.io/bin/test-1/"/>
-    <id>https://dannysunsan.github.io/bin/test-1/</id>
-    <published>2021-12-01T08:09:08.000Z</published>
-    <updated>2021-12-01T08:09:08.567Z</updated>
-    
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>test</title>
-    <link href="https://dannysunsan.github.io/bin/test/"/>
-    <id>https://dannysunsan.github.io/bin/test/</id>
-    <published>2021-12-01T08:07:42.000Z</published>
-    <updated>2021-12-01T08:07:42.716Z</updated>
-    
-    
-    
-    
     
   </entry>
   

@@ -6,20 +6,23 @@
     
 
     
-    <title>newpage | 浮萍</title>
+    <title>python删除目录下所有文件的方法 | 浮萍</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <meta name="keywords" content="" />
+    <meta name="keywords" content="python" />
     
-    <meta property="og:type" content="article">
-<meta property="og:title" content="newpage">
-<meta property="og:url" content="https://dannysunsan.github.io/bin/new/">
+    <meta name="description" content="删除所有文件及文件夹python中没有专门用于删除文件的接口，不过实现起来也不难，我这里提供了一种一种递归的方式，先利用os.listdir(path)获取目录下的所有文件，如果是文件夹就进行递归，直到最后一级；如果是文件，修改只读为可读写，删除文件。最后利用shutil.rmtree(path)删除所有目录。 1234567891011121314151617181920import osimp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python删除目录下所有文件的方法">
+<meta property="og:url" content="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/">
 <meta property="og:site_name" content="浮萍">
+<meta property="og:description" content="删除所有文件及文件夹python中没有专门用于删除文件的接口，不过实现起来也不难，我这里提供了一种一种递归的方式，先利用os.listdir(path)获取目录下的所有文件，如果是文件夹就进行递归，直到最后一级；如果是文件，修改只读为可读写，删除文件。最后利用shutil.rmtree(path)删除所有目录。 1234567891011121314151617181920import osimp">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-12-03T07:03:16.000Z">
-<meta property="article:modified_time" content="2021-12-03T07:03:16.911Z">
+<meta property="article:published_time" content="2021-12-14T07:58:05.000Z">
+<meta property="article:modified_time" content="2021-12-14T08:14:12.423Z">
 <meta property="article:author" content="dannysunsan">
+<meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary">
     
 
@@ -149,19 +152,19 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    uncategorized
+    <a class="page-title-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%B1%BB/">编程类</a>
     </h1>
 </div>
 
                         <div class="main-body-content">
-                            <article id="post-new" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-python删除目录下所有文件的方法" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        newpage
+        python删除目录下所有文件的方法
         </h1>
     
 
@@ -172,16 +175,16 @@
                 
   <div class="article-date">
     <i class="fa fa-calendar"></i>
-    <a href="/bin/new/" class="article-date">
-       <time datetime="2021-12-03T07:03:16.000Z" itemprop="datePublished">2021-12-03</time>
+    <a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/" class="article-date">
+       <time datetime="2021-12-14T07:58:05.000Z" itemprop="datePublished">2021-12-14</time>
     </a>
   </div>
 
 
 <div class="article-date">
   <i class="fa fa-calendar-plus-o"></i>
-  <a href="/bin/new/" class="article-date">
-     <time datetime="2021-12-03T07:03:16.911Z" itemprop="dateModified">2021-12-03</time>
+  <a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/" class="article-date">
+     <time datetime="2021-12-14T08:14:12.423Z" itemprop="dateModified">2021-12-14</time>
   </a>
 </div>
 
@@ -189,6 +192,11 @@
                 
 
                 
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/python/" rel="tag">python</a>
+    </div>
+
                 
 
                 
@@ -203,14 +211,15 @@
 
             
 
-            
+            <h1 id="删除所有文件及文件夹"><a href="#删除所有文件及文件夹" class="headerlink" title="删除所有文件及文件夹"></a>删除所有文件及文件夹</h1><p>python中没有专门用于删除文件的接口，不过实现起来也不难，我这里提供了一种一种递归的方式，先利用os.listdir(path)获取目录下的所有文件，如果是文件夹就进行递归，直到最后一级；如果是文件，修改只读为可读写，删除文件。最后利用shutil.rmtree(path)删除所有目录。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> stat</span><br><span class="line">	</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delFiles</span>(<span class="params">path</span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        lstFiles = os.listdir(path)	</span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> lstFiles:</span><br><span class="line">            full_path = os.path.join(path,file)</span><br><span class="line">            <span class="keyword">if</span> os.path.isdir(full_path):</span><br><span class="line">                delFiles(full_path)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                os.chmod(full_path,stat.S_IWRITE|stat.S_IWGRP|stat.S_IWOTH)</span><br><span class="line">                os.remove(full_path)</span><br><span class="line">        <span class="keyword">if</span> os.path.exists(path):</span><br><span class="line">           	shutil.rmtree(path)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">        <span class="built_in">print</span>(err)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
         </div>
         <footer class="article-footer">
             
 
 
 
-    <a data-url="https://dannysunsan.github.io/bin/new/" data-id="ckx5tsrct000e0ollbriugib4" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/" data-id="ckx5twqg0000ehcll1q89df1m" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -280,16 +289,17 @@
             "@type": "Person",
             "name": "dannysunsan"
         },
-        "headline": "newpage",
+        "headline": "python删除目录下所有文件的方法",
         "image": "https://dannysunsan.github.io",
-        "keywords": "",
-        "genre": "",
-        "datePublished": "2021-12-03",
-        "dateCreated": "2021-12-03",
-        "dateModified": "2021-12-03",
-        "url": "https://dannysunsan.github.io/bin/new/",
-        "description": "",
-        "wordCount": 1
+        "keywords": "python",
+        "genre": "编程类",
+        "datePublished": "2021-12-14",
+        "dateCreated": "2021-12-14",
+        "dateModified": "2021-12-14",
+        "url": "https://dannysunsan.github.io/编程类/python删除目录下所有文件的方法/",
+        "description": "删除所有文件及文件夹python中没有专门用于删除文件的接口，不过实现起来也不难，我这里提供了一种一种递归的方式，先利用os.listdir(path)获取目录下的所有文件，如果是文件夹就进行递归，直到最后一级；如果是文件，修改只读为可读写，删除文件。最后利用shutil.rmtree(path)删除所有目录。
+1234567891011121314151617181920import osimp",
+        "wordCount": 237
     }
 </script>
 
@@ -370,20 +380,10 @@
         
 <nav id="article-nav">
     
-        <a href="/bin/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">newer</strong>
-        <p class="article-nav-title">
-        
-            python删除目录下所有文件的方法
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/bin/test-1/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/cxx%E5%B9%B6%E5%8F%91%E4%B9%8Bcondition-variable/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">older</strong>
-        <p class="article-nav-title">test</p>
+        <p class="article-nav-title">cxx并发之condition_variable</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -405,7 +405,7 @@
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/bin/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/" class="thumbnail">
+                            <a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/" class="thumbnail">
     
     
         <span class="thumbnail-image thumbnail-none"></span>
@@ -416,69 +416,9 @@
                         </div>
                         
                         <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/bin/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/" class="title">python删除目录下所有文件的方法</a></p>
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%B1%BB/">编程类</a></p>
+                            <p class="item-title"><a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/" class="title">python删除目录下所有文件的方法</a></p>
                             <p class="item-date"><time datetime="2021-12-14T07:58:05.000Z" itemprop="datePublished">2021-12-14</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/bin/new/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/bin/new/" class="title">newpage</a></p>
-                            <p class="item-date"><time datetime="2021-12-03T07:03:16.000Z" itemprop="datePublished">2021-12-03</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/bin/test-1/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/bin/test-1/" class="title">test</a></p>
-                            <p class="item-date"><time datetime="2021-12-01T08:09:08.000Z" itemprop="datePublished">2021-12-01</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/bin/test/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/bin/test/" class="title">test</a></p>
-                            <p class="item-date"><time datetime="2021-12-01T08:07:42.000Z" itemprop="datePublished">2021-12-01</time></p>
                         </div>
                     </li>
                 
@@ -502,6 +442,66 @@
                         </div>
                     </li>
                 
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/" class="thumbnail">
+    
+    
+        <span style="background-image:url(images/multi-th.jpg)" alt="c++并发之&lt;future&gt;" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%B1%BB/">编程类</a></p>
+                            <p class="item-title"><a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/" class="title">c++并发之&lt;future&gt;</a></p>
+                            <p class="item-date"><time datetime="2021-11-24T01:52:45.000Z" itemprop="datePublished">2021-11-24</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/ipc-race.png)" alt="进程间通信" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%B1%BB/">编程类</a></p>
+                            <p class="item-title"><a href="/%E7%BC%96%E7%A8%8B%E7%B1%BB/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" class="title">进程间通信</a></p>
+                            <p class="item-date"><time datetime="2021-11-23T07:41:45.000Z" itemprop="datePublished">2021-11-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/Markdown/Markdown%E6%8A%80%E5%B7%A7/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/Markdown/Markdown%E6%8A%80%E5%B7%A7/%E5%9B%BE%E7%89%87%E5%9C%B0%E5%9D%80)" alt="Markdown技巧" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Markdown/">Markdown</a></p>
+                            <p class="item-title"><a href="/Markdown/Markdown%E6%8A%80%E5%B7%A7/" class="title">Markdown技巧</a></p>
+                            <p class="item-date"><time datetime="2021-11-23T02:58:18.000Z" itemprop="datePublished">2021-11-23</time></p>
+                        </div>
+                    </li>
+                
             </ul>
         </div>
     </div>
@@ -511,7 +511,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Markdown/">Markdown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%B1%BB/">编程类</a><span class="category-list-count">5</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Markdown/">Markdown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%B1%BB/">编程类</a><span class="category-list-count">6</span></li></ul>
         </div>
     </div>
 
@@ -521,7 +521,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -600,7 +600,7 @@
     var disqus_shortname = 'hexo-theme-hueman';
     
     
-    var disqus_url = 'https://dannysunsan.github.io/bin/new/';
+    var disqus_url = 'https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/python%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/';
     
     (function() {
     var dsq = document.createElement('script');
