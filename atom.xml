@@ -6,7 +6,7 @@
   <link href="https://dannysunsan.github.io/atom.xml" rel="self"/>
   
   <link href="https://dannysunsan.github.io/"/>
-  <updated>2021-12-14T08:14:12.423Z</updated>
+  <updated>2021-12-23T05:27:56.612Z</updated>
   <id>https://dannysunsan.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>pyinstall打包方案</title>
+    <link href="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/pyinstall%E6%89%93%E5%8C%85%E6%96%B9%E6%A1%88/"/>
+    <id>https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/pyinstall%E6%89%93%E5%8C%85%E6%96%B9%E6%A1%88/</id>
+    <published>2021-12-23T02:37:20.000Z</published>
+    <updated>2021-12-23T05:27:56.612Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="pyinstall打包方案"><a href="#pyinstall打包方案" class="headerlink" title="pyinstall打包方案"></a>pyinstall打包方案</h1><h2 id="简单打包"><a href="#简单打包" class="headerlink" title="简单打包"></a>简单打包</h2><p>安装pyinstaller</p><pre><code>pip install pyinstaller</code></pre><p>切到需要打包的文件<code>Target.py</code>目录下，运行</p><pre><code>pyinstaller [&lt;args&gt;] Target.py</code></pre><p>常用参数用法：</p><pre><code>--distpath &lt;path&gt;: 打包到哪个目录下-w: 指定生成 GUI 软件，也就是运行时不打开控制台-c: 运行时打开控制台-i &lt;Icon File&gt;: 指定打包后可执行文件的图标--clean: 在构建之前清理PyInstaller缓存并删除临时文件</code></pre><p>打包类型分为单个文件和文件夹：</p><pre><code>-D: 创建包含可执行文件的单文件夹包，同时会有一大堆依赖的 dll 文件，这是默认选项-F: 只生成一个 .exe 文件，如果项目比较小的话可以用这个，但比较大的话就不推荐</code></pre><p>运行时可能报文件丢失的错误，因为打包的时候配置文件之类的并不会一并打包过去，我们手动复制进打包目录下就行。</p><h2 id="文件过大问题"><a href="#文件过大问题" class="headerlink" title="文件过大问题"></a>文件过大问题</h2><p>如果是在Anacanda的环境下进行打包，会把很多不相干的库也打包进来，造成文件变得很大，随随便便就是几百兆，因此，我们需要用纯净的环境进行打包，来减少那些不相干的东西。</p><p>Pipenv 是一款管理虚拟环境的命令行软件，简单来讲，它可以创建一个只在某个目录下的局部 Python 环境，而这个环境是可以和全局环境脱离开的。</p><p>首先，安装pipenv</p><pre><code>pip install pipenv</code></pre><p>运行</p><pre><code>pipenv install [--python 3.9.7]</code></pre><p>install后面的参数可以缺省或者指定你安装的python版本</p><p><img src="/%E7%BC%96%E7%A8%8B%E7%B1%BB/pyinstall%E6%89%93%E5%8C%85%E6%96%B9%E6%A1%88/pipenv_install.png"></p><p>这样虚拟环境就创建成功了，使用命令<code>pip list</code>可以发现里面只有很少的库。</p><p>在虚拟环境下安装pyinstaller和依赖库：</p><pre><code>pipenv install pyinstallerpipenv install [libname]</code></pre><p>安装完成后先运行一下，如果没问题，再进行打包。</p><p>打包完毕后，发现，文件少了很多，从几百兆减少到几十兆，这样我们就打包完成了。</p><h2 id="其它注意事项"><a href="#其它注意事项" class="headerlink" title="其它注意事项"></a>其它注意事项</h2><p>打包过程中可能会遇到没有upx的问题，可以再github上面下载下来,复制upx.exe放到pyinstaller.exe对应的文件目录下。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;pyinstall打包方案&quot;&gt;&lt;a href=&quot;#pyinstall打包方案&quot; class=&quot;headerlink&quot; title=&quot;pyinstall打包方案&quot;&gt;&lt;/a&gt;pyinstall打包方案&lt;/h1&gt;&lt;h2 id=&quot;简单打包&quot;&gt;&lt;a href=&quot;#简单打包&quot;</summary>
+      
+    
+    
+    
+    <category term="编程类" scheme="https://dannysunsan.github.io/categories/%E7%BC%96%E7%A8%8B%E7%B1%BB/"/>
+    
+    
+    <category term="python" scheme="https://dannysunsan.github.io/tags/python/"/>
+    
+  </entry>
   
   <entry>
     <title>python删除目录下所有文件的方法</title>
