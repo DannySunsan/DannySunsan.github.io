@@ -10,7 +10,7 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <meta name="keywords" content="c++,多线程,并发" />
+    <meta name="keywords" content="c++,并发,多线程" />
     
     <meta name="description" content="futurestd::future 可以用来获取异步任务的结果，因此可以把它当成一种简单的线程间同步的手段。std::future 通常由某个 Provider 创建，你可以把 Provider 想象成一个异步任务的提供者，Provider 在某个线程中设置共享状态的值，与该共享状态相关联的 std::future 对象调用 get（通常在另外一个线程中） 获取该值，如果共享状态的标志不为 rea">
 <meta property="og:type" content="article">
@@ -24,8 +24,8 @@
 <meta property="article:modified_time" content="2021-11-29T09:30:27.276Z">
 <meta property="article:author" content="dannysunsan">
 <meta property="article:tag" content="c++">
-<meta property="article:tag" content="多线程">
 <meta property="article:tag" content="并发">
+<meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/images/multi-th.jpg">
     
@@ -68,6 +68,8 @@
     
     
     
+    
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
     
 
 
@@ -269,7 +271,7 @@
 
 
 
-    <a data-url="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/" data-id="ckxiiy00c0007doll9vtu9uqu" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://dannysunsan.github.io/%E7%BC%96%E7%A8%8B%E7%B1%BB/c-%E5%B9%B6%E5%8F%91%E4%B9%8B-future/" data-id="ckxilsc7i0008z8ll4hjgdiqi" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -341,7 +343,7 @@
         },
         "headline": "c++并发之&lt;future&gt;",
         "image": "https://dannysunsan.github.ioimages/multi-th.jpg",
-        "keywords": "c++ 多线程 并发",
+        "keywords": "c++ 并发 多线程",
         "genre": "编程类",
         "datePublished": "2021-11-24",
         "dateCreated": "2021-11-24",
@@ -639,8 +641,6 @@
                 </h1>
                 <p>&copy; 2021 dannysunsan</p>
                 
-                <p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank">PPOffice</a></p>
-                
             </div>
             <div class="footer-plugins">
               
@@ -718,6 +718,24 @@
     
 
     
+    
+      <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+  window.cookieconsent.initialise({
+    "palette": {
+      "popup": {
+        "background": "#f0f0f0",
+        "text": "#777777"
+      },
+      "button": {
+        "background": "#82b965",
+        "text": "#ffffff"
+      }
+    },
+    "theme": "edgeless"
+  });
+</script>
+
     
     
 
