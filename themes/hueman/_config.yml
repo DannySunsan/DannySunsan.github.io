@@ -11,7 +11,7 @@ customize:
         width: 165
         height: 60
         url: images/logo-header.png
-    theme_color: '#006bde'
+    theme_color: '#FF4500'
     highlight: rainbow
     sidebar: left # sidebar position, options: left, right
     thumbnail: true # enable posts thumbnail, options: true, false
@@ -39,7 +39,7 @@ widgets:
 search:
     insight: true # you need to install `hexo-generator-json-content` before using Insight Search
     swiftype: # enter swiftype install key here
-    baidu: false # you need to disable other search engines to use Baidu search, options: true, false
+    baidu: true # you need to disable other search engines to use Baidu search, options: true, false
 
 # Comment
 comment:
@@ -79,12 +79,12 @@ comment:
         visitor: true # count reading numbers; If true, the numbers will also show below the title of every post
         recordip: #false # If true, record commenter's ip, which is shown in LeanCloud pannel
     gitalk:
-        on: # enter true to enable gitalk
-        owner: # GitHub user name
-        repo: # GitHub repository name
-        client_id: # OAuth application client id
-        client_secret: # OAuth application client secret
-        admin: # GitHub repo owner and collaborators who can initialize github issues
+        on: true # enter true to enable gitalk
+        owner: 'DannySunsan' # GitHub user name
+        repo: 'mmTalk' # GitHub repository name
+        client_id: 'acf645ead2f45a797476' # OAuth application client id
+        client_secret: '309bbc34ad0c5d5637635b02d8cd185b4fb9d64e' # OAuth application client secret
+        admin: 'DannySunsan' # GitHub repo owner and collaborators who can initialize github issues
                # Can either be a string or an array.
 
 # Share
@@ -122,4 +122,4 @@ miscellaneous:
     links:
         Hexo: http://hexo.io
 
-poweredby: true
+poweredby: false

@@ -8,7 +8,7 @@
         id: '<%= md5(page.path) %>',
         repo: '<%= theme.comment.gitalk.repo %>',
         owner: '<%= theme.comment.gitalk.owner %>',
-        admin: <%- JSON.stringify(theme.comment.gitalk.admin)%>
+        admin: '<%- JSON.stringify(theme.comment.gitalk.admin)%>'
     })
     gitalk.render('comment-container')
 </script>
