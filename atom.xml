@@ -6,7 +6,7 @@
   <link href="https://dannysunsan.github.io/atom.xml" rel="self"/>
   
   <link href="https://dannysunsan.github.io/"/>
-  <updated>2021-12-24T06:51:16.432Z</updated>
+  <updated>2021-12-27T03:04:10.000Z</updated>
   <id>https://dannysunsan.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>tensorflow practice (win10)</title>
+    <link href="https://dannysunsan.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/tensorflow-practice-win10/"/>
+    <id>https://dannysunsan.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/tensorflow-practice-win10/</id>
+    <published>2021-12-27T03:04:10.000Z</published>
+    <updated>2021-12-27T03:04:10.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><h1 id="安装cpu版本的tensorflow"><a href="#安装cpu版本的tensorflow" class="headerlink" title="安装cpu版本的tensorflow"></a>安装cpu版本的tensorflow</h1><blockquote><p>安装配置官网讲的很详细，可以自行查看<a href="https://tensorflow.google.cn/install/source_windows">windows下构建tensorflow</a></p></blockquote><blockquote><p>或者参考github上的install guide:</p></blockquote><p>To install the current release, which includes support for CUDA-enabled GPU cards (Ubuntu and Windows):</p><pre><code>$ pip install tensorflow</code></pre><p>A smaller CPU-only package is also available:</p><pre><code>$ pip install tensorflow-cpu</code></pre><h1 id="test"><a href="#test" class="headerlink" title="test"></a>test</h1><pre><code>$ python&gt;&gt;&gt; import tensorflow as tf&gt;&gt;&gt; tf.add(1, 2).numpy()3&gt;&gt;&gt; hello = tf.constant(&#39;Hello, TensorFlow!&#39;)&gt;&gt;&gt; hello.numpy()b&#39;Hello, TensorFlow!&#39;</code></pre><hr><blockquote><p>自己搭建环境可能会有各种问题，建议直接在anaconda上新建一个tensorflow的环境使用。</p></blockquote><blockquote><p>环境搭建好了之后，就可以根据官网上面的详细<a href="https://tensorflow.google.cn/tutorials/quickstart/beginner?hl=zh_cn">教程</a>，一步步进行学习了</p></blockquote><p><img src="/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/tensorflow-practice-win10/start-practice.png"></p>]]></content>
+    
+    
+    <summary type="html">在tensorflow框架下练习深度学习(一)</summary>
+    
+    
+    
+    <category term="深度学习" scheme="https://dannysunsan.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+    <category term="python" scheme="https://dannysunsan.github.io/tags/python/"/>
+    
+    <category term="tensorflow" scheme="https://dannysunsan.github.io/tags/tensorflow/"/>
+    
+  </entry>
   
   <entry>
     <title>pyinstall打包方案</title>
