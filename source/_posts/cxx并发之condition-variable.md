@@ -6,10 +6,10 @@ tags:
     - 并发
     - 多线程
 categories: 编程类
-thumbnail: images/multi-th.jpg
+description: condition_variable实现并发的简单介绍
 ---
 
-# condition_variable
+## condition_variable
 
 [参考](http://www.cplusplus.com/reference/condition_variable/)
 
@@ -34,7 +34,7 @@ thumbnail: images/multi-th.jpg
 | notify_one | Notify one |
 | notify_all | Notify all |
 
-## wait
+### wait
 
 ```c++
   void fff()
@@ -95,7 +95,7 @@ thumbnail: images/multi-th.jpg
     }
 ```
 
-## wait_for
+### wait_for
 
 ```c++
 while (cdv.wait_for(lock, std::chrono::seconds(1)) == std::cv_status::timeout) {
@@ -103,7 +103,7 @@ while (cdv.wait_for(lock, std::chrono::seconds(1)) == std::cv_status::timeout) {
 }
 ```
 
-## wait until
+### wait until
 
 ```c++
  xtime t;
